@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: supplement
+  profiles: dev
+server:
+  port: 8082
