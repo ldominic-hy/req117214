@@ -6,6 +6,7 @@ package com.gov.bc.ca.supplement.models;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 /**
  * 
@@ -20,6 +21,7 @@ public class InputData {
 	private Integer numberOfChildren;
 	
 	@NotEmpty(message = "familyComposition is required")
+	@Pattern(regexp = "^(single|couple)$", message = "familyComposition can only be single or couple")
 	private String familyComposition;
 	
 	@NotNull(message = "familyUnitInPayForDecember is required")
@@ -40,13 +42,13 @@ public class InputData {
 	/**
 	 * @return the numberOfChildren
 	 */
-	public int getNumberOfChildren() {
+	public Integer getNumberOfChildren() {
 		return numberOfChildren;
 	}
 	/**
 	 * @param numberOfChildren the numberOfChildren to set
 	 */
-	public void setNumberOfChildren(int numberOfChildren) {
+	public void setNumberOfChildren(Integer numberOfChildren) {
 		this.numberOfChildren = numberOfChildren;
 	}
 	/**
