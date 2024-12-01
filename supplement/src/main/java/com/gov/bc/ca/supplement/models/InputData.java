@@ -13,9 +13,9 @@ import javax.validation.constraints.Pattern;
  */
 public class InputData {
 
-	@NotEmpty(message = "Id is required")
+	@NotEmpty(message = "id is required")
 	private String id;
-	
+
 	@NotNull(message = "numberOfChildren is required")
 	@Min(value = 0, message = "Number of Children should not be less than 0")
 	private Integer numberOfChildren;

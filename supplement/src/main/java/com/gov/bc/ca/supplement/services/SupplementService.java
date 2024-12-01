@@ -3,6 +3,7 @@
  */
 package com.gov.bc.ca.supplement.services;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,12 @@ import com.gov.bc.ca.supplement.models.OutputData;
 @Service
 public class SupplementService {
 
+	private static float singlePerYear = 60.0f;
+	private static float couplePerYear = 120.0f;
+	private static float childPerYear = 20.0f;
+
 	private final ApplicationEventPublisher eventPublisher;
-	
+
 	public SupplementService(ApplicationEventPublisher eventPublisher) {
 		this.eventPublisher = eventPublisher;
 	}
@@ -26,9 +31,9 @@ public class SupplementService {
 		OutputData outputData = new OutputData();
 		outputData.setId(inputData.getId());
 		outputData.setIsEligible(inputData.getFamilyUnitInPayForDecember());
-		float baseAmount = calculateBaseAmount(inputData.getFamilyComposition());
-		float childrenAmount = calculateChildrenAmount(inputData.getNumberOfChildren());
-		float supplementAmount = (baseAmount > 0) ? baseAmount + childrenAmount : 0;
+		float baseAmount = inputData.getFamilyUnitInPayForDecember()? calculateBaseAmount(inputData.getFamilyComposition()) : 0;
+		float childrenAmount = inputData.getFamilyUnitInPayForDecember() ? calculateChildrenAmount(inputData.getNumberOfChildren()) : 0;
+		float supplementAmount = (baseAmount > 0 && inputData.getFamilyUnitInPayForDecember()) ? baseAmount + childrenAmount : 0;
 		outputData.setBaseAmount(baseAmount);
 		outputData.setChildrenAmount(childrenAmount);
 		outputData.setSupplementAmount(supplementAmount);
@@ -41,12 +46,12 @@ public class SupplementService {
 		if (familyComposition == null) {
 			return 0;
 		} else {
-			return familyComposition.equals("single") ? 60 : familyComposition.equals("couple") ? 120 : 0;
+			return familyComposition.equals("single") ? singlePerYear : familyComposition.equals("couple") ? couplePerYear : 0;
 		}
 	}
 	
 	private float calculateChildrenAmount(Integer numberOfChildren) {
 		if (numberOfChildren == null || numberOfChildren < 0) return 0;
-		return 20 * numberOfChildren;
+		return childPerYear * numberOfChildren;
 	};
 }
