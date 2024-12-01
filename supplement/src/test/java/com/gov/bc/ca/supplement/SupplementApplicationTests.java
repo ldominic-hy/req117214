@@ -10,7 +10,9 @@ import org.springframework.test.context.TestPropertySource;
 	"config.mqttsvr.url=test.mosquitto.org",
 	"config.mqttsvr.port=1883",
 	"config.mqttsvr.timeout=5000",
-	"config.mqttsvr.topicId=49460000-658b-4673-b608-e14620488118"
+	"config.mqttsvr.topicId=49460000-658b-4673-b608-e14620488118",
+	"config.mqttsvr.inboundTopic=BRE/calculateWinterSupplementInput/",
+	"config.mqttsvr.outboundTopic=BRE/calculateWinterSupplementOutput/"
 })
 class SupplementApplicationTests {
 

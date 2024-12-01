@@ -6,6 +6,8 @@ config:
   mqttsvr.port: 1883
   mqttsvr.timeout: 5000
   mqttsvr.topicId: 940d0a0e-d2bd-4c7d-a069-beecaccffcbc
+  mqttsvr.inboundTopic: BRE/calculateWinterSupplementInput/
+  mqttsvr.outboundTopic: BRE/calculateWinterSupplementOutput/
 
 server:
   port: 8083
