@@ -52,5 +52,5 @@ public class SupplementService {
 	private float calculateChildrenAmount(Integer numberOfChildren) {
 		if (numberOfChildren == null || numberOfChildren < 0) return 0;
 		return childPerYear * numberOfChildren;
-	};
+	}
 }

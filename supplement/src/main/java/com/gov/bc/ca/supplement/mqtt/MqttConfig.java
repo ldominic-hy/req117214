@@ -3,28 +3,26 @@
  */
 package com.gov.bc.ca.supplement.mqtt;
 
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
-
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.annotation.IntegrationComponentScan;
-import org.springframework.integration.annotation.ServiceActivator;
+import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.config.EnableIntegration;
+import org.springframework.integration.core.MessageProducer;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.inbound.MqttPahoMessageDrivenChannelAdapter;
 import org.springframework.integration.mqtt.support.DefaultPahoMessageConverter;
-import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.MessageHandler;
-import org.springframework.messaging.MessagingException;
 
 /**
  * 
  */
+@EnableIntegration
+@IntegrationComponentScan(basePackages = "com.gov.bc")
 @Configuration
-@IntegrationComponentScan
 public class MqttConfig {
 
 	@Value("${config.mqttsvr.url}")
@@ -36,6 +34,9 @@ public class MqttConfig {
 	@Value("${config.mqttsvr.timeout}")
 	private Long mqttsvrTimeout;
 	
+	@Value("${config.mqttsvr.inboundTopic}")
+	private String inboundTopic;
+
 	@Value("${config.mqttsvr.topicId}")
 	private String topicId;
 
@@ -54,9 +55,14 @@ public class MqttConfig {
     }
 
     @Bean
-    public MqttPahoMessageDrivenChannelAdapter mqttInbound() {
+    public MessageChannel mqttOutboundChannel() {
+        return new DirectChannel();
+    }
+
+    @Bean
+    public MessageProducer mqttInbound() {
         MqttPahoMessageDrivenChannelAdapter adapter =
-                new MqttPahoMessageDrivenChannelAdapter("tcp://" + mqttsvrUrl + ":" + mqttsvrPort, "mqttClient", "BRE/calculateWinterSupplementInput/" + topicId);
+                new MqttPahoMessageDrivenChannelAdapter("tcp://" + mqttsvrUrl + ":" + mqttsvrPort, "mqttClient", inboundTopic + topicId);
         adapter.setCompletionTimeout(mqttsvrTimeout);
         adapter.setConverter(new DefaultPahoMessageConverter());
         adapter.setQos(1);
@@ -64,17 +70,9 @@ public class MqttConfig {
         return adapter;
     }
 
-    @Bean
-    @ServiceActivator(inputChannel = "mqttInputChannel")
-    public MessageHandler handler() {
-        return new MessageHandler() {
-
-            @Override
-            public void handleMessage(Message<?> message) throws MessagingException {
-                System.out.println(message.getPayload().toString());
-            }
-
-        };
+    @MessagingGateway(defaultRequestChannel = "mqttOutboundChannel")
+    public interface SupplementGateway {
+        void sendToMqtt(String data);
     }
 }
 
