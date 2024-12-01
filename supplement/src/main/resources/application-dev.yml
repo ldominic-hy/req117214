@@ -5,6 +5,7 @@ config:
   mqttsvr.url: test.mosquitto.org
   mqttsvr.port: 1883
   mqttsvr.timeout: 5000
+  mqttsvr.topicId: 940d0a0e-d2bd-4c7d-a069-beecaccffcbc
   
 server:
   port: 8082
