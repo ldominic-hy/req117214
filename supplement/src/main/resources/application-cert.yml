@@ -1,0 +1,10 @@
+spring:
+  profiles: cert
+
+config:
+  mqttsvr.url: test.mosquitto.org
+  mqttsvr.port: 1883
+  mqttsvr.timeout: 5000
+
+server:
+  port: 8083
