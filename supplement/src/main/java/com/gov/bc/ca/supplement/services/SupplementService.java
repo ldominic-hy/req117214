@@ -3,7 +3,6 @@
  */
 package com.gov.bc.ca.supplement.services;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
