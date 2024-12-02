@@ -29,7 +29,7 @@ public class SupplementController {
 	// GET: Testing from URL
 	@GetMapping
 	public String displayString() {
-		return "Testing";
+		return "Status: OK";
 	}
 	
 	// POST: Submit information for supplement amount

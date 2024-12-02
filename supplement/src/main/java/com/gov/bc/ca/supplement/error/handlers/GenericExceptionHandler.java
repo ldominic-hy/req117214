@@ -29,7 +29,7 @@ public class GenericExceptionHandler {
 		errorDetails.put("timestamp", LocalDateTime.now());
 		errorDetails.put("status", HttpStatus.BAD_REQUEST.value());
 		errorDetails.put("errors", error.getBindingResult().getFieldErrors().stream().collect(
-				Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)
+			Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)
 		));
 		return new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
 	}
