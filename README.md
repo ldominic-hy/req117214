@@ -87,3 +87,25 @@ Postman is a tool used for testing the rules engine.  Assuming the port number h
 2. Copy the `MQTT topic ID` value from the application
 3. From the `application-dev.yml` file in the `supplement\src\main\resources` folder, replace the `mqttsvr.topicId` value with this new value
 4. Restart the application to begin testing
+
+## 7. Integration testing with Postman (** Winter Supplement Calculator not working **)
+
+The local integration testing for this assignment used Postman because the Winter Supplement Calculator was unable to send the request message to the MQTT inbound topic.  The testing with Postman aimed to simulate the Winter Supplement Calculator scenario as follows:
+
+1. Setup the subscribe and publish topics in the reverse order from the `Topics` tab as follows:
+
+Publish topic: `BRE/calculateWinterSupplementInput/3237c141-b0a6-4095-9a0f-1199ca028036`
+
+Subscribe topic: `BRE/calculateWinterSupplementOutput/3237c141-b0a6-4095-9a0f-1199ca028036`
+
+![Integration testing by Postman Step 1](./document/images/integrationPostmanStep1.jpg)
+
+2. In the `application-dev.yml` file, update the `mqttsvr.topicId` value to `3237c141-b0a6-4095-9a0f-1199ca028036`
+
+3. From the `Message` tab in Postman, create the request JSON that simulates the input from the Winter Supplement Calculator.  Select `JSON` as the message type and input the publish topic into the text field.  Click the `Send` button
+
+![Integration testing by Postman Step 2](./document/images/integrationPostmanStep2.jpg)
+
+4. The `Response` section displays that the published topic receives the inbound JSON and then the results from the rules engine are sent to the subscribed topic correctly
+
+![Integration testing result by Postman](./document/images/integrationPostmanStep3.jpg)
