@@ -5,7 +5,7 @@ config:
   mqttsvr.url: test.mosquitto.org
   mqttsvr.port: 1883
   mqttsvr.timeout: 5000
-  mqttsvr.topicId: 6cb48084-fcd9-486e-98ed-a96c56fcafe5
+  mqttsvr.topicId: 3237c141-b0a6-4095-9a0f-1199ca028036
   mqttsvr.inboundTopic: BRE/calculateWinterSupplementInput/
   mqttsvr.outboundTopic: BRE/calculateWinterSupplementOutput/
   

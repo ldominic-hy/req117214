@@ -3,9 +3,12 @@
  */
 package com.gov.bc.ca.supplement.models;
 
+import org.springframework.stereotype.Component;
+
 /**
  * 
  */
+@Component
 public class OutputData {
 
 	private String id;
