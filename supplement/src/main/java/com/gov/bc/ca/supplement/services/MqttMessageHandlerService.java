@@ -4,6 +4,8 @@
 package com.gov.bc.ca.supplement.services;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -24,6 +26,8 @@ import com.gov.bc.ca.supplement.models.OutputData;
  */
 @Service
 public class MqttMessageHandlerService {
+
+	private static final Logger logger = LoggerFactory.getLogger(MqttMessageHandlerService.class);
 
 	@Autowired
 	private ApplicationEventPublisher eventPublisher;
@@ -51,6 +55,7 @@ public class MqttMessageHandlerService {
     public MessageHandler handler() {
     	return message -> {
     		String payload = message.getPayload().toString();
+    		logger.debug("inbound payload: " + payload);
 
     		JSONObject jsonObj = new JSONObject(payload);
 			inputData.setId(jsonObj.getString("id"));
@@ -68,7 +73,10 @@ public class MqttMessageHandlerService {
 	        outputJson.put("childrenAmount", outputData.getChildrenAmount());
 	        outputJson.put("supplementAmount", outputData.getSupplementAmount());
 
+    		logger.debug("outbound payload: " + outputJson.toString());
 	        mqttOutboundChannel.send(new GenericMessage<>(outputJson.toString()));
+	        inputData = new InputData();
+	        outputData = new OutputData();
     	};
     }
 
@@ -77,6 +85,8 @@ public class MqttMessageHandlerService {
     public MessageHandler mqttOutbound() {
         MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("mqttClient", mqttClientFactory);
         messageHandler.setAsync(true);
+        messageHandler.setDefaultQos(0);
+        logger.debug("Outbound Topic: " + outboundTopic + topicId);
         messageHandler.setDefaultTopic(outboundTopic + topicId);
         return messageHandler;
     }
