@@ -46,9 +46,9 @@ Note that the full inbound topic and outbound topic are made up by the following
 `mqttsvr.inboundTopic` + '/' + `mqttsvr.topicId`
 `mqttsvr.outboundTopic` + '/' + `mqttsvr.topicId`
 
-## 3. Build and start the application from the command line
+## 3. Build, run the unit tests, and start the application from the command line
 
-1. From the `supplement` folder, trigger a full build using Maven command:
+1. From the `supplement` folder, trigger a full build and run all the unit tests using Maven command:
 `mvn clean build`
 
 2. Start the application with the following command line:
