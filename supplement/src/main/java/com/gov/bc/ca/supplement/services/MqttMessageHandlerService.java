@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
@@ -30,13 +29,7 @@ public class MqttMessageHandlerService {
 	private static final Logger logger = LoggerFactory.getLogger(MqttMessageHandlerService.class);
 
 	@Autowired
-	private ApplicationEventPublisher eventPublisher;
-
-	@Autowired
-	private InputData inputData;
-
-	@Autowired
-	private OutputData outputData;
+	private SupplementService supplementService;
 
 	@Autowired
     public DefaultMqttPahoClientFactory mqttClientFactory;
@@ -58,13 +51,13 @@ public class MqttMessageHandlerService {
     		logger.debug("inbound payload: " + payload);
 
     		JSONObject jsonObj = new JSONObject(payload);
+    		InputData inputData = new InputData();
 			inputData.setId(jsonObj.getString("id"));
 			inputData.setFamilyComposition(jsonObj.getString("familyComposition"));
 			inputData.setFamilyUnitInPayForDecember(jsonObj.getBoolean("familyUnitInPayForDecember"));
-			inputData.setNumberOfChildren(jsonObj.getInt("numberOfChildren"));
+			inputData.setNumberOfChildren((Integer) jsonObj.getInt("numberOfChildren"));
 
-			SupplementService supplementService = new SupplementService(eventPublisher);
-	        outputData = supplementService.calculateOutput(inputData);
+	        OutputData outputData = supplementService.calculateOutput(inputData);
 
 	        JSONObject outputJson = new JSONObject();
 	        outputJson.put("id", outputData.getId());
@@ -75,8 +68,7 @@ public class MqttMessageHandlerService {
 
     		logger.debug("outbound payload: " + outputJson.toString());
 	        mqttOutboundChannel.send(new GenericMessage<>(outputJson.toString()));
-	        inputData = new InputData();
-	        outputData = new OutputData();
+	        outputJson.clear();
     	};
     }
 
@@ -86,7 +78,6 @@ public class MqttMessageHandlerService {
         MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler("mqttClient", mqttClientFactory);
         messageHandler.setAsync(true);
         messageHandler.setDefaultQos(0);
-        logger.debug("Outbound Topic: " + outboundTopic + topicId);
         messageHandler.setDefaultTopic(outboundTopic + topicId);
         return messageHandler;
     }
