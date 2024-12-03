@@ -5,7 +5,7 @@
 
 This assignment involves creating a rules engine to work with the existing Winter Supplement Calculator to calculate the total supplement amount on December base on applicant's eligibility.  The rules engine is developed as a Java Spring Boot application.  It accepts POST requests (i.e: `/api/submit`) with the following as an example:
 
-Request:
+*Request:*
 {
   "id": "abcde",
   "numberOfChildren: 1,
@@ -13,7 +13,7 @@ Request:
   "familyUnitInPayForDecember": true
 }
 
-Response:
+*Response:*
 {
   "id": "abcde",
   "isEligible": true,
@@ -94,9 +94,9 @@ The local integration testing for this assignment used Postman because the Winte
 
 1. Setup the subscribe and publish topics in the reverse order from the `Topics` tab as follows:
 
-Publish topic: `BRE/calculateWinterSupplementInput/3237c141-b0a6-4095-9a0f-1199ca028036`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Publish topic:* `BRE/calculateWinterSupplementInput/3237c141-b0a6-4095-9a0f-1199ca028036`
 
-Subscribe topic: `BRE/calculateWinterSupplementOutput/3237c141-b0a6-4095-9a0f-1199ca028036`
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*Subscribe topic:* `BRE/calculateWinterSupplementOutput/3237c141-b0a6-4095-9a0f-1199ca028036`
 
 ![Integration testing by Postman Step 1](./document/images/integrationPostmanStep1.jpg)
 
