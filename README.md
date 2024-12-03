@@ -1,6 +1,9 @@
 # REQ117214
 # Name: Ho Yin Dominic Leung
 
+<br>
+<br>
+
 # Introduction
 
 This assignment involves creating a rules engine to work with the existing Winter Supplement Calculator to calculate the total supplement amount on December base on applicant's eligibility.  The rules engine is developed as a Java Spring Boot application.  It accepts POST requests (i.e: `/api/submit`) with the following as an example:
@@ -21,6 +24,11 @@ This assignment involves creating a rules engine to work with the existing Winte
   "childrenAmount": 20.0,
   "supplementAmount": 80.0
 }
+
+This README file outlines the setup of the local development environment and how to conduct different tests.
+
+<br>
+<br>
 
 # Local Development Environment Setup
 
@@ -67,9 +75,20 @@ Note that the full inbound topic and outbound topic are made up by the following
 
 3. Click the `Run` button to start the application
 
-## 5. Application testing with Postman
+<br>
+<br>
 
-Postman is a tool used for testing the rules engine.  Assuming the port number has been configured as 8082 in the application-dev.yml, the POST request can be tested by following the screenshot below:
+# Local Environment Testing
+
+Application testing can be divided into specific rules engine testing and integration testing with the UI and MQTT Broker.
+
+## 1. Application rules engine testing with JUnit
+
+JUnit test cases are included in this assignment to cover different input scenarios based on the number of children, family composition, and family unit in pay for December.  The JUnit tests can be triggered in a command prompt using the Maven command `mvn clean build` from the `supplement` folder.
+
+## 2. Application rules engine testing with Postman
+
+Postman is a selected tool used for testing the rules engine.  Assuming the port number has been configured as 8082 in the application-dev.yml, the POST request can be tested by following the screenshot below:
 
 ![Postman](./document/images/postman.jpg)
 
@@ -78,7 +97,7 @@ Postman is a tool used for testing the rules engine.  Assuming the port number h
 3. Click the `Send` button
 4. The API response is displayed at the bottom of the screen
 
-## 6. Integration testing with the Winter Supplement Calculator
+## 3. Integration testing with the Winter Supplement Calculator
 
 1. Open the Winter Supplement Calculator application from the URL `https://winter-supplement-app-d690e5-tools.apps.silver.devops.gov.bc.ca`
 
@@ -88,7 +107,7 @@ Postman is a tool used for testing the rules engine.  Assuming the port number h
 3. From the `application-dev.yml` file in the `supplement\src\main\resources` folder, replace the `mqttsvr.topicId` value with this new value
 4. Restart the application to begin testing
 
-## 7. Integration testing with Postman (** Winter Supplement Calculator not working **)
+## 4. Integration testing with Postman (** Winter Supplement Calculator not working **)
 
 The local integration testing for this assignment used Postman because the Winter Supplement Calculator was unable to send the request message to the MQTT inbound topic.  The testing with Postman aimed to simulate the Winter Supplement Calculator scenario as follows:
 
